@@ -13,9 +13,77 @@ knitr::opts_chunk$set(echo = TRUE)
 #Chapter 7 - Probl. Dist.
 
 x <- seq(-4,4,length.out=100)
-y <- dnorm(x)
+y <- dnorm(x) # d = pdf 
 plot(y~x,type="l",lwd=2,xlab="x",ylab="Density",main="Standard Normal PDF Curve" )
-z <- pnorm(x)
+z <- pnorm(x) # p = cdf 
 plot(z~x,type="l",lwd=2,xlab="x",ylab="F(x)",main="Standard Normal CDF Curve" )
+
+
+# a dice is thrown x times - what is prob of getting two sixes
+x <- seq(1,100,1)
+i=dbinom(2,x,1/6)
+
+plot(i~x)
+```
+
+```{r}
+# EX 7.1prob. mass function for a binomial dist.
+# suppose you roll a dice 10 times, what are the odds of rolling two sixes
+dbinom(2,10,1/6)
+
+```
+
+```{r}
+# EX7.3 - pdf for a normal dist()
+# to find the value of the pdf x=2.5 for a normal dist. with u=5, sd=2
+dnorm(2.5,mean=5,sd=2)
+
+
+```
+
+
+
+```{r}
+
+x<- seq(77,277,1)
+y <- dnorm(x, 177, 10)
+plot(y~x)
+pnorm(200,177,10,lower.tail=F)
+z<- pnorm(x,177,10)
+dnorm(200,177,10)
+plot(z~x)
+```
+
+
+```{r}
+# EX 7.5 if you were to roll a dice 100 times what are the odds of rolling a six no more then 10 times?
+# the number of sixes in 100 rolls follows a binomial dist. so use the pbinom - p = cdf
+
+pbinom(10,100,1/6) # CDF
+
+dbinom(10,100,1/6) # PDF
+x<-seq(10,150,1)
+y<-pbinom(10,x,1/6)
+z<-dbinom(10,x,1/6)
+plot(y~x)
+plot(z~x)
+```
+
+```{r}
+# finding quantiles 
+# to find the values below which 95% of values fall
+qnorm(0.95)  # std norm (0,1) = 1.65
+
+qnorm(0.95,5.2) # returns 6.845
+
+qnorm(0.005,10,2) # values below 0.5% of the pop
+qnorm(0.005,10,2,lower.tail=F) # values above 0.5% of the pop
+
+
+# EX 7.8 EXP Dist
+# e- device fail by exponential dist. with mean = 24 months 
+# how many months until 40% of devices fail? 
+
+qexp(0.4,1/24) # 40% fail in 12.3 months 
 
 ```
