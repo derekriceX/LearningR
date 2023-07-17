@@ -1,0 +1,21 @@
+---
+title: "R_Statistics"
+author: "Rice"
+date: "2023-07-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#Chapter 7 - Probl. Dist.
+
+x <- seq(-4,4,length.out=100)
+y <- dnorm(x)
+plot(y~x,type="l",lwd=2,xlab="x",ylab="Density",main="Standard Normal PDF Curve" )
+z <- pnorm(x)
+plot(z~x,type="l",lwd=2,xlab="x",ylab="F(x)",main="Standard Normal CDF Curve" )
+
+```
