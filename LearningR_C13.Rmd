@@ -1,0 +1,84 @@
+---
+title: "LearnR_C13"
+author: "Rice"
+date: "2023-07-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+--------
+
+C13 - Relational Data
+
+----
+
+many tables of data to combine into a single table 
+
+To work with relational data you need verbs that work with pairs of tables. There are three families of verbs designed towork with relational data:
+
+Mutating joins - add new variables to one data frame from matching 
+
+Filtering joins - filter obs from one data fream based on whether or not they match an obs in the other table
+
+Set operations - which treat obs as if they were set elements 
+
+--- 
+
+13.1.1 Prerequisites 
+
+We will explore relational data from nyflights13 using the two table verbs from dplyr 
+
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+
+### 5 tables 
+
+airlines
+airports
+planes
+weather 
+flights
+
+
+planes %>% count(tailnum) %>% filter(n>1)
+
+weather %>% count(year, month, day, hour) %>% filter(n>1)
+
+```
+
+13.3 keys
+
+there are two types of keys that uniquely identifies an obs 
+
+primary key - uniquely identifies an obs in its own table 
+
+foreign key - uniquely identifies an obs in another table 
+
+```{r}
+## mutating joining - allows you to combine variables from two tables 
+## matches obs by their keys and then copies across from one table to another 
+
+flights
+
+flights2 <- flights %>% select(year:day,hour,origin,dest,tailnum,carrier)
+flights2
+# view(flights2) - prints entire table out to another window 
+
+# to add airline name to flights2 table
+# link airline table using carrier key 
+
+flight3 <- flights2 %>% select(-origin,-dest,) %>% left_join(airlines, by="carrier")
+
+```
+
