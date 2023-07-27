@@ -1,0 +1,50 @@
+---
+title: "C2 - ggplot2"
+author: "Rice"
+date: "2023-07-27"
+output: html_document
+---
+```{r}
+install.packages()
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+set.seed(1410)
+my_data <- diamonds[sample(nrow(diamonds),100),]
+dim(my_data)
+head(my_data)
+
+
+```
+```{r}
+qplot(carat,price,data=my_data)
+```
+```{r}
+qplot(log(carat),log(price),data=my_data)
+
+```
+
+```{r}
+qplot(carat,x*y*z,data=my_data)
+```
+
+```{r}
+
+qplot(carat,price,data=my_data,color=color)
+qplot(carat,price,data=my_data,shape=cut)
+```
+
+```{r}
+qplot(carat,price,data=my_data,alpha=I(1/10))
+
+
+```
+```{r}
+qplot(carat,price,data=my_data, geom=c("point","smooth"),span=0.2)
+qplot(carat,price,data=my_data, geom=c("point","smooth"),span=1.0)
+```
+
