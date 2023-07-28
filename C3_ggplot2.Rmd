@@ -1,0 +1,12 @@
+---
+title: "C3 - ggplot2 text book"
+author: "Rice"
+date: "2023-07-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+

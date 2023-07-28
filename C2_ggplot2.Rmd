@@ -48,3 +48,19 @@ qplot(carat,price,data=my_data, geom=c("point","smooth"),span=0.2)
 qplot(carat,price,data=my_data, geom=c("point","smooth"),span=1.0)
 ```
 
+```{r}
+## histogram and density
+
+qplot(carat,data=my_data,geom="histogram",binwidth=0.1,xlim=c(0,3)) # binwith can range from 0.01 to 1 
+qplot(carat,data=my_data, geom="density")
+qplot(carat,data=my_data,geom="histogram",binwidth=0.01,fill=color)
+qplot(carat,data=my_data,geom="density",fill=color)
+```
+
+```{r}
+
+
+
+
+```
+
