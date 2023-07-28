@@ -5,26 +5,41 @@ date: "2023-07-28"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+dim(diamonds)
+depth_dist <- ggplot(diamonds, aes(depth)) + xlim(58,68) # produces a blank background 
+depth_dist
+
+
+```
+```{r}
+depth_dist + geom_histogram(aes(y=..density..), binwidth = 0.1) + facet_grid(cut~.)
+```
+```{r}
+depth_dist + geom_histogram(aes(fill=cut),binwidth=0.1, position = "fill")
+
+```
+```{r}
+depth_dist + geom_freqpoly(aes(y=..density..,color=cut),binwidth=0.1)
+```
+```{r}
+qplot(cut,depth,data=diamonds,geom="boxplot")
+
+```
+```{r}
+library(ggplot2)
+library(plyr)  # needed for the round_any function 
+
+# groups the data by rounded values of "carat" to the nearest tenth using the round_any() function from the plyr package
+
+qplot(carat,depth,data=diamonds,geom="boxplot",group=round_any(carat,0.5,floor),xlim=c(0,3))
+```
+```{r}
+
+## geom jitter - a crude way of looking at discrete distributions by adding random noise to the discrete values so they do not overplot 
+
+qplot(class, cty, data=mpg,geom="jitter")
+qplot(class, drv,data=mpg,geom="jitter")
+
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
