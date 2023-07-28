@@ -1,0 +1,12 @@
+---
+title: "/c6 - ggplot2 - scales, axes, legends"
+author: "Rice"
+date: "2023-07-28"
+output: html_document
+---
+```{r}
+
+
+
+```
+
