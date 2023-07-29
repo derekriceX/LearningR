@@ -1,0 +1,29 @@
+---
+title: "SVM - survivalism"
+author: "Rice"
+date: "2023-07-29"
+output: html_document
+---
+```{r}
+install.packages("survivalsvm")
+```
+```{r}
+library(survivalsvm)
+library(survival)
+
+```
+
+```{r}
+data(veteran)
+my_data <- veteran
+
+dim(my_data)
+head(my_data)
+  
+
+```
+
+```{r}
+survivalsvm(Surv(time, status) ~ ., veteran, gamma.mu = 0.1)
+```
+

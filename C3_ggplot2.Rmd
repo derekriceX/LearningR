@@ -10,3 +10,20 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
+C3 - ggplot2 textbook - mastering the grammer
+
+```{r}
+library(ggplot2)
+head(mpg)
+
+my_data <- mpg
+
+dim(my_data)
+qplot(displ,hwy,data=my_data,color=factor(cyl))
+
+summary(my_data)
+
+p <- qplot(displ,hwy,data=my_data,facets= .~year)+geom_smooth()
+summary(p)
+```
+

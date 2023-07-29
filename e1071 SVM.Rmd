@@ -1,0 +1,245 @@
+---
+title: "e1071 SVM"
+author: "Rice"
+date: "2023-07-29"
+output: html_document
+---
+
+```{r}
+library(e1071)
+```
+
+```{r}
+??e1071
+```
+
+```{r}
+data(iris)
+bc1 <- bclust(iris[,1:4], 3, base.centers=5)
+plot(bc1)
+table(clusters.bclust(bc1, 3))
+centers.bclust(bc1, 3)
+
+
+```
+```{r}
+bincombinations(2)
+bincombinations(3)
+```
+```{r}
+
+### bootstrap.lca Bootstrap Samples of LCA Results ###
+
+
+## Generate a 4-dim. sample with 2 latent classes of 500 data points each.
+## The probabilities for the 2 classes are given by type1 and type2.
+type1 <- c(0.8, 0.8, 0.2, 0.2)
+type2 <- c(0.2, 0.2, 0.8, 0.8)
+x <- matrix(runif(4000), nrow = 1000)
+x[1:500,] <- t(t(x[1:500,]) < type1) * 1
+x[501:1000,] <- t(t(x[501:1000,]) < type2) * 1
+l <- lca(x, 2, niter=5)
+bl <- bootstrap.lca(l,nsamples=3,lcaiter=5)
+bl
+
+```
+```{r}
+### boxplot.bclust Boxplot of Cluster Profiles ###
+
+### Makes boxplots of the results of a bagged clustering run.
+
+
+data(iris)
+bc1 <- bclust(iris[,1:4], 3, base.centers=5)
+boxplot(bc1)
+
+```
+```{r}
+### classAgreement Coefficients Comparing Classification Agreement ###
+
+## classAgreement() computes several coefficients of agreement between the columns and rows of a 2-way contingency table.
+
+## no class correlations: both kappa and crand almost zero
+g1 <- sample(1:5, size=1000, replace=TRUE)
+g2 <- sample(1:5, size=1000, replace=TRUE)
+tab <- table(g1, g2)
+classAgreement(tab)
+## let pairs (g1=1,g2=1) and (g1=3,g2=3) agree better
+k <- sample(1:1000, size=200)
+g1[k] <- 1
+g2[k] <- 1
+k <- sample(1:1000, size=200)
+g1[k] <- 3
+g2[k] <- 3
+tab <- table(g1, g2)
+## both kappa and crand should be significantly larger than before
+classAgreement(tab)
+```
+```{r}
+### cmeans Fuzzy C-Means Clustering ###
+
+## The fuzzy version of the known kmeans clustering algorithm as well as an on-line variant (Unsupervised Fuzzy Competitive learning).
+
+# a 2-dimensional example
+x<-rbind(matrix(rnorm(100,sd=0.3),ncol=2),
+matrix(rnorm(100,mean=1,sd=0.3),ncol=2))
+cl<-cmeans(x,2,20,verbose=TRUE,method="cmeans",m=2)
+print(cl)
+# a 3-dimensional example
+x<-rbind(matrix(rnorm(150,sd=0.3),ncol=3),
+matrix(rnorm(150,mean=1,sd=0.3),ncol=3),
+matrix(rnorm(150,mean=2,sd=0.3),ncol=3))
+cl<-cmeans(x,6,20,verbose=TRUE,method="cmeans")
+print(cl)
+
+
+
+
+```
+
+
+```{r}
+### countpattern Count Binary Patterns
+
+# Every row of the binary matrix x is transformed into a binary pattern and these patterns are counted.
+
+xx <- rbind(c(1,0,0),c(1,0,0),c(1,0,1),c(0,1,1),c(0,1,1))
+countpattern(xx)
+countpattern(xx, matching=TRUE)
+
+```
+
+```{r}
+### naiveBayes Naive Bayes Classifier
+
+# Computes the conditional a-posterior probabilities of a categorical class variable given independent predictor variables using the Bayes rule.
+
+## Example of using a contingency table:
+data(Titanic)
+m <- naiveBayes(Survived ~ ., data = Titanic)
+m
+predict(m, as.data.frame(Titanic))
+
+
+
+
+```
+```{r}
+### plot.svm Plot SVM Objects
+
+# Generates a scatter plot of the input data of a svm fit for classification models by highlighting 
+# the classes and support vectors. Optionally, draws a filled contour plot of the class regions.
+
+## a simple example
+data(cats, package = "MASS")
+m <- svm(Sex~., data = cats)
+plot(m, cats)
+
+## more than two variables: fix 2 dimensions
+data(iris)
+m2 <- svm(Species~., data = iris)
+plot(m2, iris, Petal.Width ~ Petal.Length,
+slice = list(Sepal.Width = 3, Sepal.Length = 4))
+
+## plot with custom symbols and colors
+plot(m, cats, svSymbol = 1, dataSymbol = 2, symbolPalette = rainbow(4),
+color.palette = terrain.colors)
+
+
+
+
+```
+```{r}
+### predict.svm Predict Method for Support Vector Machines
+
+# This function predicts values based upon a model trained by svm. 
+
+## page 43
+
+
+## USAGE
+
+## S3 method for class 'svm'
+# predict(object, newdata, decision.values = FALSE,
+# probability = FALSE, ..., na.action = na.omit)
+
+data(iris)
+attach(iris)
+## classification mode
+# default with factor response:
+model <- svm(Species ~ ., data = iris)
+# alternatively the traditional interface:
+x <- subset(iris, select = -Species)
+y <- Species
+model <- svm(x, y, probability = TRUE)
+print(model)
+summary(model)
+# test with train data
+
+pred <- predict(model, x)
+# (same as:)
+pred <- fitted(model)
+# compute decision values and probabilites
+pred <- predict(model, x, decision.values = TRUE, probability = TRUE)
+attr(pred, "decision.values")[1:4,]
+attr(pred, "probabilities")[1:4,]
+## try regression mode on two dimensions
+# create data
+x <- seq(0.1, 5, by = 0.05)
+y <- log(x) + rnorm(x, sd = 0.2)
+# estimate model and predict input values
+m <- svm(x, y)
+new <- predict(m, x)
+# visualize
+plot (x, y)
+points (x, log(x), col = 2)
+points (x, new, col = 4)
+## density-estimation
+# create 2-dim. normal with rho=0:
+X <- data.frame(a = rnorm(1000), b = rnorm(1000))
+attach(X)
+# traditional way:
+m <- svm(X, gamma = 0.1)
+# formula interface:
+m <- svm(~., data = X, gamma = 0.1)
+# or:
+m <- svm(~ a + b, gamma = 0.1)
+# test:
+newdata <- data.frame(a = c(0, 4), b = c(0, 4))
+predict (m, newdata)
+# visualize:
+plot(X, col = 1:1000 %in% m$index + 1, xlim = c(-5,5), ylim=c(-5,5))
+points(newdata, pch = "+", col = 2, cex = 5)
+
+
+```
+```{r}
+### page 52 - svm Support Vector Machines
+
+# svm is used to train a support vector machine. It can be used to carry out general regression and
+# classification (of nu and epsilon-type), as well as density-estimation. A formula interface is provided.
+
+
+# plot.svm allows a simple graphical visualization of classification models.
+
+
+```
+
+```{r}
+# Load the utils package (if not already loaded)
+library(utils)
+
+# Specify the path to the gz file
+gz_file_path <- "C:/Users/derek/Downloads/svr2and4.ps.gz"
+
+# Open the gz file and read its contents
+con <- gzfile(gz_file_path)
+data <- readLines(con)  # You can use appropriate functions for your data type
+
+# Close the gz file
+close(con)
+
+head(data)
+data
+```
+

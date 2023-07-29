@@ -5,3 +5,83 @@ date: "2023-07-28"
 output: html_document
 ---
 
+```{r}
+# qplot allows only a single dataset and a single aesthetic 
+```
+
+```{r}
+
+dim(diamonds)
+my_data <- diamonds
+dim(my_data)
+
+
+p <- ggplot(my_data, aes(carat,price,color=cut))
+
+p  # plot object cannot be displayed until we add a layer - there is nothing to see 
+```
+
+```{r}
+p <- p + layer(geom="point")
+p
+```
+
+```{r}
+p <- ggplot(my_data, aes(carat,price,color=cut)) +geom_point()
+
+p
+```
+
+```{r}
+p <- ggplot(my_data,aes(x=carat))
+            
+p <- p + geom_histogram(binwidth=.2,fill="steelblue")
+p
+```
+
+```{r}
+
+### setting vs mapping 
+
+p <- ggplot(mtcars,aes(mpg,wt))
+p   # blank plot
+
+p + geom_point(color="darkblue")  # uses default aesthetic mapping - sets color = constant
+p  # displays data as blue points
+
+p <- ggplot(mtcars,aes(mpg,wt))
+p+ geom_point(aes(color="darkblue")) # data displayed as red points
+# above maps color to the variable "darkblue" aesthetic to a variable
+
+
+# map an aesthetic to a variable ex - (aes(color = "factor"))
+# set an aesthetic to a constant (aes(color = "red"))
+
+
+
+```
+
+```{r}
+install.packages("nlme")
+library(nlme)
+dim(Oxboys)
+
+
+
+
+```
+
+```{r}
+library(nlme)
+library(ggplot2)
+p <- ggplot(Oxboys,aes(age,height, color = Subject)) + geom_line()
+p + geom_smooth(aes(group=1),method="lm",size=2, se=F)
+p
+```
+
+```{r}
+ggplot (geom_area())
+
+
+```
+

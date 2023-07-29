@@ -5,8 +5,89 @@ date: "2023-07-28"
 output: html_document
 ---
 ```{r}
-
+library(ggplot2)
 
 
 ```
+
+```{r}
+plot <- qplot(cty,hwy,data=mpg)
+plot
+
+plot <- plot + aes(x=drv) + scale_color_identity("red")
+plot
+
+```
+
+```{r}
+plot <- qplot(sleep_total,sleep_cycle,data=msleep, color=vore)
+plot
+
+plot <- plot + scale_color_hue()  # explicity add the default scale 
+
+plot
+
+# adjust para of the default here by changing the appearance of the legend
+
+
+plot <- qplot(sleep_total,sleep_cycle,data=msleep, color=vore)
+
+plot <- plot + scale_colour_hue("What does/nit eat?",
+  breaks = c("herbi","carni","omni","NA"),
+  labels = c("plants","meat","both","don't know"))
+
+plot
+
+
+# to use a different scale 
+plot <- qplot(sleep_total,sleep_cycle,data=msleep,color=vore)
+plot <- plot + scale_color_brewer(pal="Set1")
+plot
+```
+```{r}
+library(vcd)
+library(ggplot2)
+fill_gradn <- function (pal){
+  scale_fill_gradientn(colours = pal(7),limits=c(0,0.04))
+}
+
+erupt + fill_gradn(rainbow_hcl)
+erupt + fill_gradn(diverge_hcl)
+erupt + fill_gradn(heat_hcl)
+
+```
+
+
+```{r}
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
